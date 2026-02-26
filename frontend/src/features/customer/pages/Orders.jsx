@@ -1,4 +1,5 @@
-import { formatCurrency, formatDateTime } from '../../../utils/formatters';
+import { OrderCard, PageHeader } from '../../../components/common';
+import { EmptyState } from '../../../components/ui';
 import { useCustomerViewModel } from '../../../viewmodels/useCustomerViewModel';
 
 function Orders() {
@@ -8,28 +9,14 @@ function Orders() {
 
   return (
     <section className="panel">
-      <h1>Order History</h1>
+      <PageHeader title="Order History" subtitle={`${orders.length} order(s)`} />
 
       {!orders.length ? (
-        <p>No orders placed yet.</p>
+        <EmptyState icon="📦" title="No orders yet" message="Place your first order to see it here." />
       ) : (
         <div className="stack">
           {orders.map((order) => (
-            <article className="card" key={order.id}>
-              <div className="row-between">
-                <h3>Order {order.id}</h3>
-                <span>{order.status}</span>
-              </div>
-              <p>{formatDateTime(order.created_at)}</p>
-              <ul>
-                {order.items.map((item) => (
-                  <li key={item.id}>
-                    {getProductName(item.product_id)} × {item.quantity} = {formatCurrency(item.quantity * item.price)}
-                  </li>
-                ))}
-              </ul>
-              <strong>Total: {formatCurrency(order.total_amount)}</strong>
-            </article>
+            <OrderCard key={order.id} order={order} getProductName={getProductName} />
           ))}
         </div>
       )}

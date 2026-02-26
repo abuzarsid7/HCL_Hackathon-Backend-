@@ -1,4 +1,4 @@
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.js';
 
 /**
@@ -24,9 +24,17 @@ const navigationByRole = {
 
 function Navbar({ navItems }) {
   const { currentUser, role, signOut } = useAuth();
+  const { pathname } = useLocation();
 
-  const items = navItems ?? navigationByRole[role] ?? [];
+  const guestAuthItem = pathname === '/signup'
+    ? [{ to: '/login', label: '🔐 Login' }]
+    : [{ to: '/signup', label: '📝 Signup' }];
+
+  const items = currentUser
+    ? (navItems ?? navigationByRole[role] ?? [])
+    : guestAuthItem;
   const homeRoute = role === 'SELLER' ? '/seller/dashboard' : '/customer/home';
+  const shouldShowNavLinks = currentUser || items.length > 0;
 
   return (
     <header className="app-header">
@@ -36,7 +44,7 @@ function Navbar({ navItems }) {
       </Link>
 
       {/* Nav links */}
-      {currentUser && (
+      {shouldShowNavLinks && (
         <nav className="nav-links" aria-label="Main navigation">
           {items.map((item) => (
             <NavLink

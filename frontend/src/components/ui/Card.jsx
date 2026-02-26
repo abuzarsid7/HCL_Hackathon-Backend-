@@ -1,8 +1,4 @@
-/**
- * Card – generic container matching the .card design token.
- *
- * hoverable: adds pointer cursor + subtle lift on hover
- */
+
 function Card({ children, hoverable = false, onClick, style, className, ...rest }) {
   const hoverStyle = hoverable
     ? {

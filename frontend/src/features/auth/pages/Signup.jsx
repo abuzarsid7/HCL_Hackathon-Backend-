@@ -22,8 +22,8 @@ function EyeIcon({ visible }) {
 
 const ROLE_OPTIONS = [
   { value: '',                   label: 'Select your role…' },
-  { value: USER_ROLES.CUSTOMER,  label: '👤 Customer – Browse & order food' },
-  { value: USER_ROLES.SELLER,    label: '🏪 Seller – List & sell food items' },
+  { value: USER_ROLES.CUSTOMER,  label: 'Customer' },
+  { value: USER_ROLES.SELLER,    label: 'Seller' },
 ];
 
 const INITIAL_FORM = {

@@ -10,6 +10,7 @@ import ManageProducts from '../features/seller/pages/ManageProducts';
 import SalesAnalytics from '../features/seller/pages/SalesAnalytics';
 import AppLayout from '../components/AppLayout';
 import { useAuth } from '../hooks/useAuth';
+import AllProducts from '../features/public/pages/Home';
 
 function RoleGuard({ allowedRole, children }) {
 	const { isAuthenticated, role } = useAuth();
@@ -32,6 +33,9 @@ function AppRoutes() {
 			<Route path="/signup" element={<Signup />} />
 
 			<Route element={<AppLayout />}>
+
+                <Route path="/" element={<AllProducts />} />
+
 				<Route
 					path="/customer/home"
 					element={

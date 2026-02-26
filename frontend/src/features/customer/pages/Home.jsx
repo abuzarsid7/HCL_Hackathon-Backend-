@@ -1,6 +1,5 @@
 import { useMemo, useState } from 'react';
-import { PRODUCT_CATEGORIES } from '../../../utils/constants';
-import { formatCurrency, toTitleCase } from '../../../utils/formatters';
+import { CategoryFilter, PageHeader, ProductCard } from '../../../components/common';
 import { useCustomerViewModel } from '../../../viewmodels/useCustomerViewModel';
 
 function Home() {
@@ -16,35 +15,15 @@ function Home() {
 
   return (
     <section className="panel">
-      <div className="page-header">
-        <h1>Browse Food Items</h1>
-        <select value={categoryFilter} onChange={(event) => setCategoryFilter(event.target.value)}>
-          <option value="ALL">All Categories</option>
-          {Object.values(PRODUCT_CATEGORIES).map((category) => (
-            <option key={category} value={category}>
-              {toTitleCase(category)}
-            </option>
-          ))}
-        </select>
-      </div>
+      <PageHeader
+        title="Browse Food Items"
+        subtitle={`${visibleProducts.length} items available`}
+        action={<CategoryFilter value={categoryFilter} onChange={setCategoryFilter} />}
+      />
 
       <div className="card-grid">
         {visibleProducts.map((product) => (
-          <article className="card" key={product.id}>
-            <h3>{product.name}</h3>
-            <p>{toTitleCase(product.category)} · {product.size}</p>
-            <p>Packaging: {toTitleCase(product.packaging_type)}</p>
-            <p>Stock: {product.stock}</p>
-            <strong>{formatCurrency(product.price)}</strong>
-            <button
-              className="btn"
-              type="button"
-              disabled={product.stock <= 0}
-              onClick={() => addToCart(product.id, 1)}
-            >
-              {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
-            </button>
-          </article>
+          <ProductCard key={product.id} product={product} onAdd={(productId) => addToCart(productId, 1)} />
         ))}
       </div>
     </section>

@@ -16,16 +16,29 @@ const categoryIcons = {
   BREAD: '🍞',
 };
 
-function ProductCard({ product, onAdd }) {
+function ProductCard({ product, onAdd, onCardClick }) {
   const isOutOfStock = product.stock <= 0;
   const isLowStock   = product.stock > 0 && product.stock <= 5;
 
   return (
     <article
       className="card"
+      role={onCardClick ? 'button' : undefined}
+      tabIndex={onCardClick ? 0 : undefined}
       style={{
         gap: '0.5rem',
         transition: 'box-shadow 0.15s ease, transform 0.15s ease',
+        cursor: onCardClick ? 'pointer' : undefined,
+      }}
+      onClick={() => onCardClick?.(product)}
+      onKeyDown={(e) => {
+        if (!onCardClick) {
+          return;
+        }
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onCardClick(product);
+        }
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.boxShadow = '0 4px 16px rgba(0,0,0,0.1)';
@@ -67,7 +80,10 @@ function ProductCard({ product, onAdd }) {
         <Button
           size="sm"
           disabled={isOutOfStock}
-          onClick={() => onAdd?.(product.id)}
+          onClick={(e) => {
+            e.stopPropagation();
+            onAdd?.(product.id);
+          }}
         >
           {isOutOfStock ? 'Sold Out' : '+ Add'}
         </Button>

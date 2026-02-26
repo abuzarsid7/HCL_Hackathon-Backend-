@@ -1,4 +1,4 @@
-import { ORDER_STATUS, PACKAGING_TYPES, PRODUCT_CATEGORIES, PRODUCT_SIZES, USER_ROLES } from './constants';
+import { ORDER_STATUS, PACKAGING_TYPES, PRODUCT_CATEGORIES, PRODUCT_SIZES, USER_ROLES } from './constants.js';
 
 const BASE_USERS = [
   {
@@ -103,7 +103,7 @@ const BASE_ORDERS = [
   {
     id: 'o-1',
     customer_id: 'u-c-1',
-    total_amount: 428,
+    total_amount: 528,
     status: ORDER_STATUS.CONFIRMED,
     created_at: '2026-02-20T12:30:00.000Z',
     items: [
@@ -119,7 +119,7 @@ const BASE_ORDERS = [
         order_id: 'o-1',
         product_id: 'p-4',
         quantity: 1,
-        price: 29
+        price: 129
       }
     ]
   }
