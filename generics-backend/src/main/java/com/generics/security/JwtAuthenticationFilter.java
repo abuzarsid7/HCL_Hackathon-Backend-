@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -19,7 +18,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter
 {
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     @Override
     protected void doFilterInternal(
@@ -36,17 +35,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter
             return;
         }
         String token = header.substring(7);
+        try {
+            String userId = jwtUtil.extractUserId(token);
+            String role = jwtUtil.extractRole(token);
 
-        String userId = jwtUtil.extractUserId(token);
-        String role = jwtUtil.extractRole(token);
+            var authorities = List.of(
+                    new SimpleGrantedAuthority("ROLE_" + role)
+            );
+            UsernamePasswordAuthenticationToken authToken =
+                      new UsernamePasswordAuthenticationToken(userId,null,authorities);
 
-        var authorities = List.of(
-                new SimpleGrantedAuthority("ROLE_" + role)
-        );
-        UsernamePasswordAuthenticationToken authToken =
-                  new UsernamePasswordAuthenticationToken(userId,null,authorities);
-
-        SecurityContextHolder.getContext().setAuthentication(authToken);
+            SecurityContextHolder.getContext().setAuthentication(authToken);
+        } catch (Exception ex) {
+            SecurityContextHolder.clearContext();
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return;
+        }
         filterChain.doFilter(request,response);
 
     }
