@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import Login from '../features/auth/pages/Login';
+import Signup from '../features/auth/pages/Signup';
 import Cart from '../features/customer/pages/Cart';
 import Home from '../features/customer/pages/Home';
 import Orders from '../features/customer/pages/Orders';
@@ -27,7 +28,8 @@ function RoleGuard({ allowedRole, children }) {
 function AppRoutes() {
 	return (
 		<Routes>
-			<Route path="/login" element={<Login />} />
+			<Route path="/login"  element={<Login />} />
+			<Route path="/signup" element={<Signup />} />
 
 			<Route element={<AppLayout />}>
 				<Route

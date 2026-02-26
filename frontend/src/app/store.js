@@ -1,5 +1,6 @@
 import { createContext, createElement, useContext, useMemo, useState } from 'react';
 import { createInitialMockData, createProductId, createOrderId, deepClone } from '../utils/mockData';
+import { tokenStorage } from '../services/interceptors';
 import { createOrderModel } from '../models/orderModel';
 import { createProductModel } from '../models/productModel';
 
@@ -36,10 +37,37 @@ export function AppStoreProvider({ children }) {
 				}));
 			},
 			signOut() {
+				tokenStorage.clear();
 				setState((prev) => ({
 					...prev,
 					currentUserId: null
 				}));
+			},
+			/**
+			 * Register a new user (called after a successful signUp API response).
+			 * Also creates an empty cart for CUSTOMER accounts.
+			 */
+			registerUser(rawUser) {
+				setState((prev) => {
+					const next = deepClone(prev);
+
+					// Guard: do not duplicate
+					if (next.users.find((u) => u.email.toLowerCase() === rawUser.email.toLowerCase())) {
+						return prev;
+					}
+
+					next.users.push(rawUser);
+
+					if (rawUser.role === 'CUSTOMER') {
+						next.carts.push({
+							id: `cart-${rawUser.id}`,
+							customer_id: rawUser.id,
+							items: []
+						});
+					}
+
+					return next;
+				});
 			},
 			addToCart({ customerId, productId, quantity }) {
 				setState((prev) => {
