@@ -1,4 +1,6 @@
-import { formatCurrency } from '../../../utils/formatters';
+import { Link } from 'react-router-dom';
+import { CartItemRow, CartSummary, PageHeader } from '../../../components/common';
+import { Button, EmptyState } from '../../../components/ui';
 import { useCustomerViewModel } from '../../../viewmodels/useCustomerViewModel';
 
 function Cart() {
@@ -6,17 +8,29 @@ function Cart() {
 
   return (
     <section className="panel">
-      <div className="page-header">
-        <h1>Your Cart</h1>
-        <button className="btn" type="button" disabled={!cartItemsDetailed.length} onClick={placeOrder}>
-          Place Order
-        </button>
-      </div>
+      <PageHeader
+        title="Your Cart"
+        subtitle={`${cartItemsDetailed.length} line item(s)`}
+        action={
+          <Button type="button" disabled={!cartItemsDetailed.length} onClick={placeOrder}>
+            Place Order
+          </Button>
+        }
+      />
 
       {!cartItemsDetailed.length ? (
-        <p>Your cart is currently empty.</p>
+        <EmptyState
+          icon="🛒"
+          title="Your cart is empty"
+          message="Browse products and add your favorites."
+          action={
+            <Link to="/customer/home">
+              <Button>Browse Items</Button>
+            </Link>
+          }
+        />
       ) : (
-        <>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', alignItems: 'start' }}>
           <table className="table">
             <thead>
               <tr>
@@ -24,30 +38,28 @@ function Cart() {
                 <th>Price</th>
                 <th>Quantity</th>
                 <th>Total</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {cartItemsDetailed.map((item) => (
-                <tr key={item.id}>
-                  <td>{item.product?.name ?? 'Unknown Product'}</td>
-                  <td>{formatCurrency(item.price_at_time)}</td>
-                  <td>
-                    <input
-                      min={0}
-                      type="number"
-                      value={item.quantity}
-                      onChange={(event) =>
-                        updateCartItem(item.product_id, Number(event.target.value))
-                      }
-                    />
-                  </td>
-                  <td>{formatCurrency(item.lineTotal)}</td>
-                </tr>
+                <CartItemRow
+                  key={item.id}
+                  item={item}
+                  onUpdate={updateCartItem}
+                  onRemove={(productId) => updateCartItem(productId, 0)}
+                />
               ))}
             </tbody>
           </table>
-          <h2>Grand Total: {formatCurrency(cartTotal)}</h2>
-        </>
+
+          <CartSummary
+            itemCount={cartItemsDetailed.length}
+            cartTotal={cartTotal}
+            onPlaceOrder={placeOrder}
+            disabled={!cartItemsDetailed.length}
+          />
+        </div>
       )}
     </section>
   );
