@@ -43,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductResponse addProduct(ProductRequest req) {
+    public ProductResponse addNewProduct(ProductRequest req) {
         User seller = currentUser();
         Product product = Product.builder()
                 .name(req.getName())
@@ -58,13 +58,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductResponse> getMyProducts() {
+    public List<ProductResponse> getProductsBySeller() {
         return productRepository.findBySeller(currentUser())
                 .stream().map(this::toResponse).collect(Collectors.toList());
     }
 
     @Override
-    public List<ProductResponse> getAllProducts() {
+    public List<ProductResponse> fetchAllProducts() {
         return productRepository.findAll()
                 .stream().map(this::toResponse).collect(Collectors.toList());
     }

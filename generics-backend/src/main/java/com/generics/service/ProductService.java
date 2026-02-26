@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ProductService
 {
-    ProductResponse addProduct(@Valid ProductRequest req);
-    List<ProductResponse> getMyProducts();
-    List<ProductResponse> getAllProducts();
+    ProductResponse addNewProduct(@Valid ProductRequest req);
+    List<ProductResponse> getProductsBySeller();
+    List<ProductResponse> fetchAllProducts();
 }

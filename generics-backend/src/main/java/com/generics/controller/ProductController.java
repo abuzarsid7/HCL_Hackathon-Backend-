@@ -6,32 +6,31 @@ import com.generics.service.ProductService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 @RestController
 @AllArgsConstructor
+@RequestMapping("/api/seller")
+
 public class ProductController
 {
     private final ProductService productService;
 
 
-    @PostMapping("/api/seller/products")
+    @PostMapping("/products")
     public ResponseEntity<ProductResponse> addProduct(@Valid @RequestBody ProductRequest req) {
-        return ResponseEntity.ok(productService.addProduct(req));
+        return ResponseEntity.ok(productService.addNewProduct(req));
     }
 
 
-    @GetMapping("/api/seller/products")
+    @GetMapping("/products")
     public ResponseEntity<List<ProductResponse>> getMyProducts() {
-        return ResponseEntity.ok(productService.getMyProducts());
+        return ResponseEntity.ok(productService.getProductsBySeller());
     }
 
-    @GetMapping("/api/products")
+    @GetMapping("/products")
     public ResponseEntity<List<ProductResponse>> getAllProducts() {
-        return ResponseEntity.ok(productService.getAllProducts());
+        return ResponseEntity.ok(productService.fetchAllProducts());
     }
 }
