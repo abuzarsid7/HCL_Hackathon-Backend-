@@ -1,15 +1,10 @@
 import { useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Button, Card, Input, Spinner } from '../../../components/ui';
 import { useAuth } from '../../../hooks/useAuth';
 import { validateSignInForm } from '../../../utils/validators';
 import '../../../app/styles/app.css';
 
-const DEMO_ACCOUNTS = [
-  { email: 'aarav.customer@example.com',  password: 'customer123', label: 'Aarav (Customer)' },
-  { email: 'meera.customer@example.com',  password: 'customer123', label: 'Meera (Customer)' },
-  { email: 'rohan.seller@example.com',    password: 'seller123',   label: 'Rohan (Seller)'   },
-  { email: 'sanya.seller@example.com',    password: 'seller123',   label: 'Sanya (Seller)'   },
-];
 
 function EyeIcon({ visible }) {
   return visible ? (
@@ -81,7 +76,7 @@ function Login() {
 
   return (
     <div className="auth-page">
-      <div className="auth-card">
+      <Card className="auth-card" style={{ borderRadius: 20 }}>
         {/* Header */}
         <div className="auth-header">
           <div className="auth-logo">🍕</div>
@@ -93,20 +88,18 @@ function Login() {
         <form onSubmit={handleSubmit} noValidate>
 
           {/* Email */}
-          <div className="auth-field">
-            <label htmlFor="email" className="auth-label">Email address</label>
-            <input
-              id="email"
-              type="email"
-              autoComplete="email"
-              placeholder="you@example.com"
-              value={form.email}
-              onChange={(e) => setField('email', e.target.value)}
-              className={errors.email ? 'auth-input auth-input-error' : 'auth-input'}
-              disabled={loading}
-            />
-            {errors.email && <span className="auth-field-error">{errors.email}</span>}
-          </div>
+          <Input
+            id="email"
+            label="Email address"
+            type="email"
+            autoComplete="email"
+            placeholder="you@example.com"
+            value={form.email}
+            onChange={(e) => setField('email', e.target.value)}
+            disabled={loading}
+            error={errors.email}
+            containerStyle={{ marginBottom: '0.85rem' }}
+          />
 
           {/* Password */}
           <div className="auth-field">
@@ -142,39 +135,21 @@ function Login() {
           )}
 
           {/* Submit */}
-          <button type="submit" className="auth-btn-primary" disabled={loading}>
-            {loading ? <span className="auth-spinner" /> : null}
+          <Button type="submit" fullWidth disabled={loading} style={{ marginTop: '0.3rem' }}>
+            {loading ? <Spinner size="sm" color="#ffffff" label="Signing in" /> : null}
             {loading ? 'Signing in…' : 'Sign In'}
-          </button>
+          </Button>
         </form>
 
         {/* Divider */}
         <div className="auth-divider"><span>or continue with a demo account</span></div>
-
-        {/* Quick-login buttons */}
-        <div className="auth-demo-grid">
-          {DEMO_ACCOUNTS.map((acc) => (
-            <button
-              key={acc.email}
-              type="button"
-              className="auth-demo-btn"
-              onClick={() => quickLogin(acc)}
-              disabled={loading}
-            >
-              <span className="auth-demo-role">
-                {acc.label.includes('Customer') ? '👤' : '🏪'}
-              </span>
-              <span>{acc.label}</span>
-            </button>
-          ))}
-        </div>
 
         {/* Footer link */}
         <p className="auth-footer-text">
           Don&apos;t have an account?{' '}
           <Link to="/signup" className="auth-link">Create one</Link>
         </p>
-      </div>
+      </Card>
     </div>
   );
 }
