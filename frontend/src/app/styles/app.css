@@ -588,3 +588,364 @@ select {
     grid-template-columns: 1fr;
   }
 }
+
+/* ================================================================
+   PROFILE DROPDOWN  (Navbar)
+   ================================================================ */
+
+.profile-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: none;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 50px;
+  padding: 0.35rem 0.75rem 0.35rem 0.35rem;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.profile-trigger:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.profile-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.78rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: 0.02em;
+}
+
+.profile-avatar-lg {
+  width: 2.75rem;
+  height: 2.75rem;
+  font-size: 1rem;
+}
+
+.profile-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  text-align: left;
+}
+
+.profile-name {
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+.profile-role {
+  font-size: 0.72rem;
+  color: #94a3b8;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.profile-caret {
+  font-size: 0.6rem;
+  color: #94a3b8;
+  margin-left: 0.1rem;
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 220px;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.12);
+  padding: 0.75rem;
+  z-index: 200;
+  animation: dropdownIn 0.15s ease;
+}
+
+@keyframes dropdownIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.profile-dropdown-info {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.25rem 0.25rem 0.75rem;
+}
+
+.profile-dropdown-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: #0f172a;
+}
+
+.profile-dropdown-store {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 0.15rem;
+}
+
+.profile-dropdown-role-badge {
+  display: inline-block;
+  margin-top: 0.3rem;
+  padding: 0.15rem 0.5rem;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.profile-dropdown-divider {
+  height: 1px;
+  background: #f1f5f9;
+  margin: 0 -0.75rem 0.5rem;
+}
+
+.profile-dropdown-logout {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: #dc2626;
+  font-size: 0.87rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.profile-dropdown-logout:hover {
+  background: #fef2f2;
+}
+
+/* ================================================================
+   DASHBOARD  (Seller)
+   ================================================================ */
+
+.dashboard-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.dash-header {
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.dash-title {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.dash-subtitle {
+  margin: 0.25rem 0 0;
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.btn-add-product {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 700;
+  font-size: 0.92rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+  transition: box-shadow 0.15s, transform 0.1s;
+}
+
+.btn-add-product:hover {
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  transform: translateY(-1px);
+}
+
+/* Stats */
+.dash-stats {
+  margin-top: 0;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  border-radius: 12px;
+  transition: box-shadow 0.15s;
+}
+
+.stat-card:hover {
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+}
+
+.stat-icon {
+  font-size: 1.75rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.stat-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stat-value {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+/* Manage Products panel */
+.manage-panel {
+  padding: 1.25rem;
+}
+
+.manage-header {
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.manage-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.manage-subtitle {
+  margin: 0.2rem 0 0;
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+.item-count-badge {
+  padding: 0.25rem 0.75rem;
+  background: #f1f5f9;
+  color: #475569;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid #e2e8f0;
+}
+
+.table-wrap {
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #f1f5f9;
+}
+
+.table thead tr {
+  background: #f8fafc;
+}
+
+.table th {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+.row-num {
+  color: #94a3b8;
+  font-size: 0.82rem;
+  width: 2rem;
+}
+
+.product-name-cell {
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.cat-badge {
+  padding: 0.2rem 0.6rem;
+  background: #eff6ff;
+  color: #2563eb;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.stock-badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.stock-ok {
+  background: #dcfce7;
+  color: #16a34a;
+}
+
+.stock-low {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.stock-input {
+  width: 80px !important;
+  padding: 0.35rem 0.5rem;
+  border-radius: 8px;
+  border: 1.5px solid #e2e8f0;
+  font-size: 0.88rem;
+  transition: border-color 0.15s;
+}
+
+.stock-input:focus {
+  border-color: #2563eb;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Empty state */
+.dash-empty {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: #94a3b8;
+}
+
+.dash-empty-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+

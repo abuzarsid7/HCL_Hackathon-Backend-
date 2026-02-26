@@ -1,11 +1,10 @@
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth.js';
-
 /**
- * Navbar – top navigation bar extracted as a standalone layout component.
- * Matches the existing .app-header CSS classes from app.css.
- *
- * navItems – array of { to, label } objects (auto-derived from role if not passed)
+ * Navbar – top navigation bar.
+ * Seller role shows only Dashboard nav link and a profile dropdown
+ * (name, store name, logout) in the right corner.
  */
 
 const navigationByRole = {
@@ -15,12 +14,73 @@ const navigationByRole = {
     { to: '/customer/orders', label: '📦 Orders' },
   ],
   SELLER: [
-    { to: '/seller/dashboard',        label: '📊 Dashboard' },
-    { to: '/seller/add-product',      label: '➕ Add Product' },
-    { to: '/seller/manage-products',  label: '📋 Manage Products' },
-    { to: '/seller/sales-analytics',  label: '📈 Analytics' },
+    { to: '/seller/dashboard', label: '📊 Dashboard' },
   ],
 };
+
+function ProfileDropdown({ currentUser, role, signOut }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+
+  // Close on outside click
+  useEffect(() => {
+    const handler = (e) => {
+      if (ref.current && !ref.current.contains(e.target)) setOpen(false);
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  const initials = (currentUser?.name ?? '?')
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+
+  return (
+    <div className="profile-wrap" ref={ref}>
+      <button
+        type="button"
+        className="profile-trigger"
+        aria-expanded={open}
+        aria-haspopup="true"
+        onClick={() => setOpen((o) => !o)}
+      >
+        <div className="profile-avatar">{initials}</div>
+        <div className="profile-meta">
+          <span className="profile-name">{currentUser?.name}</span>
+          <span className="profile-role">{role}</span>
+        </div>
+        <span className="profile-caret" aria-hidden="true">{open ? '▲' : '▼'}</span>
+      </button>
+
+      {open && (
+        <div className="profile-dropdown" role="menu">
+          <div className="profile-dropdown-info">
+            <div className="profile-avatar profile-avatar-lg">{initials}</div>
+            <div>
+              <div className="profile-dropdown-name">{currentUser?.name}</div>
+              {currentUser?.store_name && (
+                <div className="profile-dropdown-store">🏪 {currentUser.store_name}</div>
+              )}
+              <span className="profile-dropdown-role-badge">{role}</span>
+            </div>
+          </div>
+          <div className="profile-dropdown-divider" />
+          <button
+            type="button"
+            className="profile-dropdown-logout"
+            role="menuitem"
+            onClick={() => { setOpen(false); signOut(); }}
+          >
+            <span>🚪</span> Sign out
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 function Navbar({ navItems }) {
   const { currentUser, role, signOut } = useAuth();
@@ -59,19 +119,12 @@ function Navbar({ navItems }) {
       )}
 
       {/* User block */}
-      {currentUser && (
-        <div className="header-user-block">
-          <div className="user-meta">
-            <span className="user-name">{currentUser.name}</span>
-            <span className="user-role">{role}</span>
-          </div>
-          <button className="btn btn-secondary" type="button" onClick={signOut}>
-            Logout
-          </button>
-        </div>
-      )}
+      {currentUser ? (
+        <ProfileDropdown currentUser={currentUser} role={role} signOut={signOut} />
+      ) : null}
     </header>
   );
 }
 
 export default Navbar;
+
